@@ -1,0 +1,71 @@
+{% load static %}
+{% load post_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'post/css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'post/css/body.css' %}">
+    <title>IT Course</title>
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="grid">
+                <div class="header__navbar">
+                    <div class="header__left-section">
+                        <a href="{% url 'home' %}" class="header__logo-link">
+                            <img src="{% static 'post/img/logo-udemy.svg' %}" alt="" class="header__link-img">
+                        </a>
+                        <div class="header__katalog">
+                            <span>Категории</span>
+                        </div>
+                    </div>
+                    <div class="header__search">
+                        <div class="header__search-section">
+                            <i class="header__search-icon fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <input type="text" placeholder="Название курса" class="header__input">
+                    </div>
+                    {% get_menu as menu %}
+                    {% for m in menu %}
+                    <div class="header__option">
+                        {% if m.title == 'Добавить курс' %}
+                        <a href="{% url m.url_name %}" class="header__sell-title">
+                            {{m.title}}
+                            <div class="header__sell-option">
+                                <div>
+                                    <span class="header__sell-text">Ваши знания станут проводником
+                                         в мире возможностей и достигнут миллионов.
+                                    </span>
+                                    <a href="#" class="header__sell-btn">
+                                        Подробнее
+                                    </a>
+                                </div>
+                            </div>
+                        </a>
+                        {% endif %}
+                    </div>
+                        <div class="header__btn">
+                            {% if m.title == 'Войти' %}
+                            <a href="{% url m.url_name %}" class="header__btn-link header__btn--login">
+                                {{m.title}}
+                            </a>
+                            {% endif %}
+                            {% if m.title == 'Регистрация' %}
+                            <a href="{% url m.url_name %}" class="header__btn-link header__btn--register">
+                                {{m.title}}
+                            </a>
+                            {% endif %}
+                        </div>
+                </div>
+            {% endfor %}
+            </div>
+        </header>
+    </div>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

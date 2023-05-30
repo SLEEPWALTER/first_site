@@ -1,0 +1,16 @@
+{% extends 'post/base.html' %}
+{% block content %}
+
+    {%for c in courses %}
+        <div class="grid">
+                <div class="grid__row">
+                    <div class="grid__column">
+                        <a href="#" class="lesson">
+                            <h3 class="lesson-text">{{c.title}}</h3>
+                            <h4>Автор: {{c.author}}</h4>
+                        </a>
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
+{% endblock %}

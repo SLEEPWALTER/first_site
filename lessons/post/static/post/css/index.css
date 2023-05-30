@@ -1,0 +1,30 @@
+:root {
+    --white-color: white;
+    --black-color: #000;
+    --text-color: #333;
+    --border-color: #1F1F1F;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6rem;
+    box-sizing: inherit;
+}
+.grid {
+    max-width: 100%;
+    width: 2400px;
+    margin: 0 auto;
+}
+.grid__row {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: nowrap;
+    padding-top: 54px;
+}
+.grid__column {
+    width: 33.333%;
+    padding: 0px;
+}
+

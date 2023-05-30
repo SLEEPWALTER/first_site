@@ -1,0 +1,33 @@
+{% extends 'post/base.html'%}
+{% load static %}
+{% block content %}
+ <main class="main">
+            <div class="grid">
+                <div class="grid__row">
+                    <img class="home-first__img" src="{% static 'post/img/img.jpg' %}" alt="">
+                </div>
+                <div class="grid__row">
+                    <h1 class="home-first_title">Education is easy for everyone</h1>
+                </div>
+                <div class="grid__row">
+                    <a href="#" class="home-first__btn">
+                        Начать учиться бесплатно
+                    </a>
+                </div>
+            </div>
+     {% for c in cats %}
+            <div class="grid">
+                <div class="grid__row">
+                    <div class="grid__column">
+                        <a href="{{c.get_absolute_url}}" class="lesson">
+                            {% if c.photo %}
+                            <img class="lesson-img" src="{{c.photo.url}}" alt="">
+                            {% endif %}
+                            <h3 class="lesson-text">{{c.name}}</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+     {% endfor %}
+        </main>
+{% endblock %}
