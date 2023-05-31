@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.template.defaultfilters import slugify
 
 
 class Category(models.Model):
@@ -28,6 +29,10 @@ class Course(models.Model):
     basic_requirements = models.TextField(verbose_name='Начальные требования')
     course_program = models.TextField(verbose_name='Программа курса')
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Категория')
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Course, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('category', kwargs={'course_slug': self.slug})

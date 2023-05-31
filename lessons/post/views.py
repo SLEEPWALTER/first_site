@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound
+from django.urls import reverse_lazy
+
 from .models import *
 from .forms import AddCourseForm
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
 
 menu = [
     {'title': 'Добавить курс', 'url_name': 'add_course'},
@@ -45,18 +47,30 @@ def show_course_post(request, course_slug):
     return render(request, 'post/course.html', context=context)
 
 
-def add_course(request):
-    if request.method == 'POST':
-        form = AddCourseForm(request.POST, request.FILES)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.slug = form.cleaned_data['slug']
-            instance.save()
-            return redirect('home')
-    else:
-        form = AddCourseForm()
+class AddCourse(CreateView):
+    form_class = AddCourseForm
+    template_name = 'post/add_course.html'
+    success_url = reverse_lazy('home')
 
-    return render(request, 'post/add_course.html', {'form': form, 'title': 'Добавление курса'})
+
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Создание курса'
+        return context
+
+
+# def add_course(request):
+#     if request.method == 'POST':
+#         form = AddCourseForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             instance = form.save(commit=False)
+#             instance.slug = form.cleaned_data['slug']
+#             instance.save()
+#             return redirect('home')
+#     else:
+#         form = AddCourseForm()
+#
+#     return render(request, 'post/add_course.html', {'form': form, 'title': 'Добавление курса'})
 
 
 def login(request):
