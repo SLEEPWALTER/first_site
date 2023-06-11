@@ -1,9 +1,12 @@
+from django.contrib.auth import logout, login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound
 from django.urls import reverse_lazy
 
 from .models import *
-from .forms import AddCourseForm
+from .forms import AddCourseForm, RegisterUserForm, LoginUserForm
 from django.views.generic import ListView, CreateView
 
 menu = [
@@ -52,7 +55,6 @@ class AddCourse(CreateView):
     template_name = 'post/add_course.html'
     success_url = reverse_lazy('home')
 
-
     def get_context_data(self, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Создание курса'
@@ -73,12 +75,39 @@ class AddCourse(CreateView):
 #     return render(request, 'post/add_course.html', {'form': form, 'title': 'Добавление курса'})
 
 
-def login(request):
-    return HttpResponse('<h1>login page</h1>')
+class LoginUser(LoginView):
+    form_class = LoginUserForm
+    template_name = 'post/login.html'
+
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Авторизация'
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('home')
 
 
-def register(request):
-    return HttpResponse('<h1>register page</h1>')
+def logout_user(request):
+    logout(request)
+    return redirect('login')
+
+
+class RegisterUser(CreateView):
+    form_class = RegisterUserForm
+    template_name = 'post/register.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Регистрация'
+        return context
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('home')
+
 
 
 def pageNotFound(request, exception):
